@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Лабораторна роота 8</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+        }
+        .scoreboard {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+        }
+        .player-box {
+            background: #00bcd4;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            width: 45%;
+            font-weight: bold;
+        }
+        .player-box span {
+            display: block;
+            font-size: 28px;
+            margin-top: 5px;
+        }
+        .arena {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .circle {
+            width: 80px;
+            height: 80px;
+            border: 4px solid #333;
+            border-radius: 50%;
+            background: #ffeb3b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        #generateBtn {
+            background: #00e676;
+            color: black;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        #generateBtn:hover {
+            background: #00c853;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            .circle {
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Гра: Більше число</h1>
+        <div class="scoreboard">
+            <div class="player-box">
+                <div id="userName">Користувач</div>
+                <span id="userScore">0</span>
+            </div>
+            <div class="player-box">
+                <div>Комп'ютер</div>
+                <span id="computerScore">0</span>
+            </div>
+        </div>
+
+        <div class="arena">
+            <div class="circle" id="userNum">?</div>
+            <button id="generateBtn">Generate</button>
+            <div class="circle" id="computerNum">?</div>
+        </div>
+
+        <div id="message">Зробіть хід! Гра триває до 3 перемог.</div>
+    </div>
+
+    <script>
+        let userName = prompt("Введіть ваше ім'я:", "Гравець");
+        if (!userName || userName.trim() === "") {
+            userName = "Гравець";
+        }
+        document.getElementById("userName").textContent = userName;
+
+        let userScore = 0;
+        let computerScore = 0;
+        const targetWins = 3;
+
+        const generateBtn = document.getElementById("generateBtn");
+        const userNumEl = document.getElementById("userNum");
+        const computerNumEl = document.getElementById("computerNum");
+        const userScoreEl = document.getElementById("userScore");
+        const computerScoreEl = document.getElementById("computerScore");
+        const messageEl = document.getElementById("message");
+
+        generateBtn.addEventListener("click", () => {
+            if (userScore >= targetWins || computerScore >= targetWins) {
+                return;
+            }
+
+            let userRand = Math.floor(Math.random() * 10) + 1;
+            let compRand = Math.floor(Math.random() * 10) + 1;
+
+            userNumEl.textContent = userRand;
+            computerNumEl.textContent = compRand;
+
+            if (userRand > compRand) {
+                userScore++;
+                userScoreEl.textContent = userScore;
+                messageEl.textContent = `${userName} виграє цей раунд!`;
+            } else if (compRand > userRand) {
+                computerScore++;
+                computerScoreEl.textContent = computerScore;
+                messageEl.textContent = "Комп'ютер виграє цей раунд!";
+            } else {
+                messageEl.textContent = "Нічия в цьому раунді!";
+            }
+
+            if (userScore >= targetWins) {
+                messageEl.textContent = "Вітаємо! ${userName} переміг(-ла) у матчі!";
+                generateBtn.disabled = true;
+                generateBtn.style.background = "#ccc";
+            } else if (computerScore >= targetWins) {
+                messageEl.textContent = "На жаль, комп'ютер переміг у матчі. Спробуйте ще раз!";
+                generateBtn.disabled = true;
+                generateBtn.style.background = "#ccc";
+            }
+        });
+    </script>
+</body>
+</html>
